@@ -1,0 +1,276 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{color}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{amsmath}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{listings}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\renewcommand{\baselinestretch}{1.2}%Adjust Line Spacing
+\newtheorem{Q}{Question}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}% Adjust Margins of the File
+\usepackage{tikz-qtree}
+\usetikzlibrary{graphs}
+\tikzset{every tree node/.style={minimum width=2em,draw,circle},
+	blank/.style={draw=none},
+	edge from parent/.style=
+	{draw,edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}},
+	level distance=1.2cm}
+\setlength{\droptitle}{-6em}
+%%% Code style
+\lstset{
+	%backgroundcolor=\color{red!50!green!50!blue!50},%代码块背景色为浅灰色
+	rulesepcolor= \color{gray}, %代码块边框颜色
+	breaklines=true,  %代码过长则换行
+	numbers=left, %行号在左侧显示
+	numberstyle= \small,%行号字体
+	keywordstyle= \color{magenta},%关键字颜色
+	commentstyle=\color{blue}, %注释颜色
+	frame=shadowbox, %用方框框住代码块
+	tabsize=3, %缩进大小
+	showspaces = false
+}
+% Create horizontal rule command with an argument of height
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}
+% Set the title here
+\title{
+    \normalfont \normalsize
+    \textsc{ShanghaiTech University} \\ [25pt]
+    \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+    \huge CS101 Algorithms and Data Structures\\ % The assignment title
+    \LARGE Fall 2019\\
+    \LARGE Homework 5\\
+    \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+% wrong usage of \author, never mind
+\author{}
+\date{Due date: 23:59, October 27, 2019}
+
+% set the header and footer
+\pagestyle{fancy}
+\lhead{CS101 Algorithms and Data Structures}
+\chead{Homework 5}
+\rhead{Due date: 23:59, October 27, 2019}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% special settings for the first page
+\fancypagestyle{firstpage}
+{
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyhf{}
+	\fancyfoot[C]{\thepage}
+}
+
+% Add the support for auto numbering
+% use \problem{title} or \problem[number]{title} to add a new problem
+% also \subproblem is supported, just use it like \subsection
+\newcounter{ProblemCounter}
+\newcounter{oldvalue}
+\newcommand{\problem}[2][-1]{
+	\setcounter{oldvalue}{\value{secnumdepth}}
+	\setcounter{secnumdepth}{0}
+	\ifnum#1>0
+		\setcounter{ProblemCounter}{#1}
+	\else
+		\stepcounter{ProblemCounter}
+	\fi
+	\section{Problem \arabic{ProblemCounter}: #2}
+	\setcounter{secnumdepth}{\value{oldvalue}}
+}
+\newcommand{\subproblem}[1]{
+	\setcounter{oldvalue}{\value{section}}
+	\setcounter{section}{\value{ProblemCounter}}
+	\subsection{#1}
+	\setcounter{section}{\value{oldvalue}}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{firstpage}
+%\newpage
+\vspace{3ex}
+
+\begin{enumerate}
+\item Please write your solutions in English. 
+
+\item Submit your solutions to gradescope.com.  
+
+\item Set your FULL Name to your Chinese name and your STUDENT ID correctly in Account Settings. 
+
+\item If you want to submit a handwritten version, scan it clearly. Camscanner is recommended. 
+
+\item When submitting, match your solutions to the according problem numbers correctly. 
+
+\item No late submission will be accepted.
+
+\item Violations to any of above may result in zero score. 
+\end{enumerate}
+\newpage
+
+\section{(5') Binary Search Tree and AVL Tree}
+Each question has one or more correct answer(s). Select all the correct answer(s). For each question, you get $0$ point if you select one or more wrong answers, but you get $0.5$ point if you select a non-empty subset of the correct answers.\\
+\textit{Note that you should write you answers of section 1 in the table below.}
+\begin{table}[htbp]
+	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline 
+		Question 1 & Question 2 & Question 3 & Question 4 & Question 5  \\ 
+		\hline 
+		&  &  &  & \\ 
+		\hline 
+	\end{tabular} 
+\end{table}
+\begin{Q}
+	Consider the BST created by inserting the following keys in the given order in an initially empty BST: 1 5 7 2 3 6 4(ordered by value). Which other sequence(s), if any, produce the same BST?
+	\begin{enumerate}[(A)]
+		\item 3 1 2 5 7 4 6
+		\item 1 6 5 7 4 2 3
+		\item 1 5 2 7 3 4 6
+		\item 1 5 6 7 2 4 3
+	\end{enumerate}
+\end{Q}
+
+
+\begin{Q}
+	Which of the followings are true? 
+	\begin{enumerate}[(A)]
+		\item For a min-heap inorder traversal gives the elements in ascending order.
+		\item For a min-heap preorder traversal gives the elements in ascending order.
+		\item For a BST inorder traversal gives the elements in ascending order.
+		\item For a BST preorder traversal gives the elements in ascending order.
+	\end{enumerate}
+\end{Q}
+
+
+\begin{Q}
+	Which of the following statements are true for an AVL-tree?
+	\begin{enumerate}[(A)]
+		\item Inserting an item can unbalance non-consecutive nodes on the path from the root to the inserted item before the restructuring.
+		\item Inserting an item can cause at most one node imbalanced before the restructuring.
+		\item Removing an item in leaf nodes can cause at most one node imbalanced before the restructuring.
+		\item Only at most one node-restructuring has to be performed after inserting an item.
+	\end{enumerate}
+\end{Q}
+
+
+
+\begin{Q}
+	Consider an AVL tree whose height is h, which of the following are true?
+	\begin{enumerate}[(A)]
+		\item this tree contains $\Omega(\alpha^h)$ keys, where $\alpha = \dfrac{1+\sqrt{5}}{2}$.
+		\item this tree contains $\theta(2^h)$ keys.
+		\item this tree contains $O(h)$ keys in the worst case.
+		\item none of the above.
+	\end{enumerate}
+\end{Q}
+\begin{Q}
+Which of the following is TRUE?
+\begin{enumerate}[(A)]
+\item The cost of searching an AVL tree is $\theta(\log n)$ but that of a binary search tree is $O(n)$
+\item The cost of searching an AVL tree is $\theta(\log n)$ but that of a complete binary tree is $\theta(n \log n)$
+\item The cost of searching a binary search tree with height h is $O(h)$ but that of an AVL tree is $\theta(\log n)$
+\item The cost of searching an AVL tree is $\theta(n log n)$ but that of a binary search tree is $O(n)$
+\end{enumerate}
+\end{Q}
+%%%%% (2)
+\section{(6') Magic BST}
+Consider the binary search tree below. Each symbol represents an object stored in the BST. \\
+\begin{minipage}{1\textwidth}
+	\centering
+	\begin{tikzpicture}
+	\Tree
+	[.$\alpha$
+		[.$\beta$
+			\edge[];[.$\gamma$
+			]
+			\edge[blank]; \node[blank]{};
+		]
+		[.$\lambda$
+			\edge[];[.$\sigma$
+			\edge[];\node[]{};
+			\edge[blank]; \node[blank]{};
+			]
+			\edge[];[.$\omega$
+			\edge[];[.$\theta$
+			]
+			\edge[];\node[]{};
+			]
+		]
+	]
+	\end{tikzpicture}
+\end{minipage} \\
+\begin{Q} (3') Based on the ordering given by the tree above, fill in the BST below with valid symbols. Symbols
+must be unique. You may only use the 7 printed symbols (do not include any symbols from part b).
+\begin{minipage}{1\textwidth}
+	\centering
+	\begin{tikzpicture}
+	\Tree
+	[.\node[]{};
+		\edge[];[.\node[]{};
+		\edge[];[.\node[]{};
+		\edge[];[.\node[]{};]
+		\edge[];[.\node[]{};
+		\edge[blank];[.\node[blank]{};]
+		\edge[];[.\node[]{};]
+		]
+		]
+		\edge[];[.\node[]{};]
+		]
+		\edge[blank]; \node[blank]{};
+	]
+	\end{tikzpicture}
+\end{minipage} \\
+\end{Q}
+\begin{Q} (3') For each of the insertion operations below, use the information given to "insert" the element into the
+\textbf{TOP TREE WITH PRINTED SYMBOLS, NOT THE TREE WITH YOUR HANDWRITTEN 
+SYMBOLS} by drawing the object (and any needed links) onto the tree. You can assume the objects are
+inserted in the order shown below. You should not change anything about the original tree; you should
+only add links and nodes for the new objects. If there is not enough information to determine where the
+object should be inserted into the tree, circle “not enough information”. If there is enough information,
+circle “drawn in the tree above” and \textbf{draw in the tree AT THE TOP OF THE PAGE.}
+
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{cccc}
+		insert($\phi$): & $\phi>\omega$ & Draw In Tree Above & Not enough Information \\ 
+		insert($\chi$): & $\chi>\gamma$&  Draw In Tree Above & Not enough Information \\
+		insert($\xi$): & $\alpha<\xi<\sigma$&  Draw In Tree Above & Not enough Information \\
+		insert($\mu$): & $\lambda<\mu<\omega$&  Draw In Tree Above & Not enough Information \\
+	\end{tabular} 
+\end{table}
+\end{Q}
+
+\pagebreak
+\section{(2')Property of BST}
+\begin{Q}(2')
+Teaching assistant Keyi thinks that he has discovered a critical property of the binary search tree. If you want to find a key in this tree, you will get a search path from the root to that key. Then he defines three sets of all the nodes in this tree. The first one $A$: the nodes are on the left to the searched node and not on the search path. The second one $B$: the nodes are on the search path. The third one $C$: the nodes are on the right to the searched node and not on the search path. Then he claims that any three keys: $a\in A$, $b\in B$ and $c\in C$ must satisfied $a\leq b\leq c$. Do you think his claim is right? If true, prove it. If not, give a counterexample. 
+\end{Q}
+\newpage
+
+\section{(9')Only-child}
+We define that the node is only-child if its parent node only have one children(Note: The root does not qualify as an only child). And we define a function of the binary tree: $OC(T)=$the number of only-child node.
+
+
+\begin{Q}
+(3')Prove that for any nonempty AVL tree T with n nodes, we have that OC(T)$\leq\dfrac{1}{2}n$
+\end{Q}
+
+\vspace{6cm}
+\begin{Q}
+(3')Is it true for any binary tree T with n nodes, that if $OC(T)\leq\dfrac{1}{2}n$ then $height(T)=O(\log n)$? If true, prove it. If not, give a counterexample.
+\end{Q}
+\vspace{6cm}
+\begin{Q}
+(3') Is it true for any binary tree T, that if there are $n$ node which is only-child, all of which are leaves, then $height(T)=O(\log n)$?
+If true, prove it. If not, give a counterexample.
+\end{Q}
+
+\end{document}

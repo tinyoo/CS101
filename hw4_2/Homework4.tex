@@ -1,0 +1,791 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{color}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{amsmath}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{listings}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\renewcommand{\baselinestretch}{1.2}%Adjust Line Spacing
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}% Adjust Margins of the File
+\usepackage{tikz-qtree}
+\usetikzlibrary{graphs}
+\tikzset{every tree node/.style={minimum width=2em,draw,circle},
+	blank/.style={draw=none},
+	edge from parent/.style=
+	{draw,edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}},
+	level distance=1.2cm}
+\setlength{\droptitle}{-6em}
+%%% Code style
+\lstset{
+	%backgroundcolor=\color{red!50!green!50!blue!50},%代码块背景色为浅灰色
+	rulesepcolor= \color{gray}, %代码块边框颜色
+	breaklines=true,  %代码过长则换行
+	numbers=left, %行号在左侧显示
+	numberstyle= \small,%行号字体
+	keywordstyle= \color{magenta},%关键字颜色
+	commentstyle=\color{blue}, %注释颜色
+	frame=shadowbox, %用方框框住代码块
+	tabsize=3, %缩进大小
+	showspaces = false
+}
+% Create horizontal rule command with an argument of height
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}
+% Set the title here
+\title{
+    \normalfont \normalsize
+    \textsc{ShanghaiTech University} \\ [25pt]
+    \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+    \huge CS101 Algorithms and Data Structures\\ % The assignment title
+    \LARGE Fall 2019\\
+    \LARGE Homework 4\\
+    \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+% wrong usage of \author, never mind
+\author{}
+\date{Due date: 23:59, October 20, 2019}
+
+% set the header and footer
+\pagestyle{fancy}
+\lhead{CS101 Algorithms and Data Structures}
+\chead{Homework 4}
+\rhead{Due date: 23:59, October 20, 2019}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% special settings for the first page
+\fancypagestyle{firstpage}
+{
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyhf{}
+	\fancyfoot[C]{\thepage}
+}
+
+% Add the support for auto numbering
+% use \problem{title} or \problem[number]{title} to add a new problem
+% also \subproblem is supported, just use it like \subsection
+\newcounter{ProblemCounter}
+\newcounter{oldvalue}
+\newcommand{\problem}[2][-1]{
+	\setcounter{oldvalue}{\value{secnumdepth}}
+	\setcounter{secnumdepth}{0}
+	\ifnum#1>0
+		\setcounter{ProblemCounter}{#1}
+	\else
+		\stepcounter{ProblemCounter}
+	\fi
+	\section{Problem \arabic{ProblemCounter}: #2}
+	\setcounter{secnumdepth}{\value{oldvalue}}
+}
+\newcommand{\subproblem}[1]{
+	\setcounter{oldvalue}{\value{section}}
+	\setcounter{section}{\value{ProblemCounter}}
+	\subsection{#1}
+	\setcounter{section}{\value{oldvalue}}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{firstpage}
+%\newpage
+\vspace{3ex}
+
+\begin{enumerate}
+\item Please write your solutions in English. 
+
+\item Submit your solutions to gradescope.com.  
+
+\item Set your FULL Name to your Chinese name and your STUDENT ID correctly in Account Settings. 
+
+\item If you want to submit a handwritten version, scan it clearly. Camscanner is recommended. 
+
+\item When submitting, match your solutions to the according problem numbers correctly. 
+
+\item No late submission will be accepted.
+
+\item Violations to any of above may result in zero score. 
+\end{enumerate}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start of Problem 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\problem{Binary Tree \& Heap}
+
+\paragraph{}
+Binary Tree and Heap have a ton of uses and fun properties. To get you warmed up with them, try working
+through the following problems.
+
+Multiple Choices: Each question has one or more correct answer(s). Select all the correct answer(s). For each question, you get $0$ point if you select one or more wrong answers, but you get $0.5$ point if you select a non-empty subset of the correct answers.\\
+\textit{Note that you should write you answers of Problem 1 in the table below.}
+\begin{table}[htbp]
+	\begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{8cm}|}
+	\hline 
+	Q(1) & Q(2) & Q(3) & Q(4) & Q(5) \\
+	\hline 
+	&&&&\\ 
+	\hline 
+	\end{tabular} 
+\end{table} \\
+%%%%% (1)
+(1) Which of the following statements about the binary tree is true? \\
+A. Every binary tree has at least one node. \\
+B. Every non-empty tree has exactly one root node. \\
+C. Every node has at most two children. \\
+D. Every non-root node has exactly one parent. \\
+~\\
+%%%%% (2)
+(2) Which traversals of binary tree 1 and binary tree 2, will produce the same sequence node name?\\
+\begin{minipage}{1\textwidth}
+	\centering
+	\begin{tikzpicture}
+	\Tree
+	[.A
+		[.B
+			\edge[blank]; \node[blank]{};
+			\edge[];[.D
+				\edge[];[.E
+					\edge[];[.G ]
+					\edge[];[.H
+						\edge[blank]; \node[blank]{};
+						\edge[];[.I 
+							\edge[blank]; \node[blank]{};
+							\edge[];[.J
+							] 
+						]
+					]
+				]
+				\edge[]; [.F
+				]
+			]
+		]
+		[.C
+		]
+	]
+	\end{tikzpicture}
+	\begin{tikzpicture}
+	\Tree
+	[.G
+		\edge[blank]; \node[blank]{};
+		\edge[]; [.F
+			\edge[]; [.E 
+				\edge[];[.I 
+					\edge[];[.J ]
+					\edge[];[.H ]
+				]
+				\edge[blank]; \node[blank]{};
+			]
+			\edge[]; [.C 
+				\edge[]; [.D
+					\edge[blank]; \node[blank]{};
+					\edge[];[.B ]  
+				]
+				\edge[]; [.A ]
+			] 
+		]
+	]
+	\end{tikzpicture}
+\end{minipage} \\
+A. Postorder, Postorder \\
+B. Postorder, Inorder \\
+C. Inorder, Inorder \\
+D. Preorder, Preorder \\
+~\\
+%%%%% (3)
+(3) Which of the following statements about the binary tree is \textbf{not} true? \\
+A. A rooted binary tree has the property that $n_{0} = n_{2} + 1$, where $n_{i}$ denotes the number of nodes with $i$ degrees.\\
+B. Post-order traverse can give the same output sequence as a BFS.\\
+C. BFS and DFS on a binary tree always give different traversal sequences.\\
+D. None of the above.\\
+~\\
+%%%%% (4)
+(4) Which of the following statements about the binary heap is \textbf{not} true? \\
+A. There exists a heap with seven distinct elements so that the in-order traversal gives the element in sorted order. \\
+B. If item A is an ancestor of item B in a heap (used as a Priority Queue) then it must be the case that the Insert operation for item A occurred before the \texttt{Insert} operation for item B.\\
+C. If array A is sorted from smallest to largest then A (excluding A[0]) corresponds to a min-heap. \\
+D. None of the above. \\
+~\\
+%%%%% (7)
+(5) Suppose we construct a min-heap from the following initial heap by Floyd's method. After the construction is completed, we delete the root from the heap. What will be the post-order traversal of the heap? Write down your answer in the table above directly.\\
+~\\
+\begin{minipage}{1\textwidth}
+	\centering
+	\begin{tikzpicture}
+	\Tree
+	[.120
+	[.140
+	\edge[]; [.50
+	\edge[]; [.90
+	\edge[blank]; \node[blank]{};
+	\edge[blank]; \node[blank]{};
+	]
+	\edge[]; [.20
+	\edge[blank]; \node[blank]{};
+	\edge[blank]; \node[blank]{};
+	]
+	]
+	\edge[]; [.80
+	\edge[]; [.100
+	\edge[blank]; \node[blank]{};
+	\edge[blank]; \node[blank]{};
+	]
+	\edge[blank]; \node[blank]{};
+	]
+	]
+	[.40
+	% \edge[blank]; \node[blank]{};
+	\edge[]; [.70
+	\edge[blank]; \node[blank]{};
+	\edge[blank]; \node[blank]{};
+	]
+	\edge[]; [.60
+	\edge[blank]; \node[blank]{};
+	\edge[blank]; \node[blank]{};
+	]
+	]
+	]
+	\end{tikzpicture}
+\end{minipage}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% End of Problem 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start of Problem 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\problem{Heap Sort}
+\paragraph{}
+You are given such a max heap like this:
+
+\begin{minipage}{1\textwidth}
+\centering
+	\begin{tikzpicture}
+	\Tree
+	[.88
+		[.85
+			\edge[]; [.72
+				\edge[]; [.11
+					\edge[blank]; \node[blank]{};
+					\edge[blank]; \node[blank]{};
+				]
+				\edge[]; [.48
+					\edge[blank]; \node[blank]{};
+					\edge[blank]; \node[blank]{};
+				]
+			]
+			\edge[]; [.73
+				\edge[]; [.60
+					\edge[blank]; \node[blank]{};
+					\edge[blank]; \node[blank]{};
+				]
+				\edge[blank]; \node[blank]{};
+			]
+		]
+		[.83
+		% \edge[blank]; \node[blank]{};
+			\edge[]; [.42
+				\edge[blank]; \node[blank]{};
+				\edge[blank]; \node[blank]{};
+			]
+			\edge[]; [.57
+				\edge[blank]; \node[blank]{};
+				\edge[blank]; \node[blank]{};
+			]
+		]
+	]
+	\end{tikzpicture}
+\end{minipage}%
+
+Then you need to use array method to show each step of heap sort in increasing order. Fill in the value in the table below. Notice that the value we have put is the step of each value sorted successfully. For each step, you should always make you heap satisfies the requirement of max heap property.
+
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value & $\quad $ & $\quad $ & $\quad $ &$\quad $  &$\quad $  & $\quad $ &$\quad $  &$\quad $  & $\quad $ &$\quad $  &$\quad $  \\ \hline
+		\end{tabular}%
+	}
+	\caption{The original array to represent max heap.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value & $\quad $ &$\quad $  &$\quad $  &$\quad $  &$\quad $  & $\quad $ &$\quad $  &$\quad $  &$\quad $  &$\quad $  & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{First value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value &$\quad $  &$\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $& $\quad $ & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Second value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value &$\quad $  & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Third value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value &$\quad $  & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & \cellcolor[HTML]{C0C0C0}73 & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Fourth value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & $\quad $ & \cellcolor[HTML]{C0C0C0}72 & \cellcolor[HTML]{C0C0C0}73 & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Fifth value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value & $\quad $ & $\quad $ & $\quad $& $\quad $ & $\quad $ & \cellcolor[HTML]{C0C0C0}60 & \cellcolor[HTML]{C0C0C0}72 & \cellcolor[HTML]{C0C0C0}73 & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Sixth value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value & $\quad $ & $\quad $ & $\quad $ & $\quad $ & \cellcolor[HTML]{C0C0C0}57 & \cellcolor[HTML]{C0C0C0}60 & \cellcolor[HTML]{C0C0C0}72 & \cellcolor[HTML]{C0C0C0}73 & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Seventh value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value &$\quad $  & $\quad $ & $\quad $ & \cellcolor[HTML]{C0C0C0}48 & \cellcolor[HTML]{C0C0C0}57 & \cellcolor[HTML]{C0C0C0}60 & \cellcolor[HTML]{C0C0C0}72 & \cellcolor[HTML]{C0C0C0}73 & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Eighth value is successfully sorted.}
+	\label{}
+\end{table}
+\begin{table}[!hbtp]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			index & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+			value & $\quad $ & \cellcolor[HTML]{C0C0C0}11 & \cellcolor[HTML]{C0C0C0}42 & \cellcolor[HTML]{C0C0C0}48 & \cellcolor[HTML]{C0C0C0}57 & \cellcolor[HTML]{C0C0C0}60 & \cellcolor[HTML]{C0C0C0}72 & \cellcolor[HTML]{C0C0C0}73 & \cellcolor[HTML]{C0C0C0}83 & \cellcolor[HTML]{C0C0C0}85 & \cellcolor[HTML]{C0C0C0}88 \\ \hline
+		\end{tabular}%
+	}
+	\caption{Last 2 values are successfully sorted.}
+	\label{}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% End of Problem 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start of Problem 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\problem{Median Produce 101}
+\paragraph{}
+Nowadays the hotest variety show \textit{Produce 101} has a new rule to judge all the singers: for all 5 judgers, use the median score value among all the judgers to set her score. Previously, the programme group has a calculator to calculate the score for each singer. Accidentally, the calculator is broken one day. And the fans of famous star Yang Chaoyue are eagerly waiting for the score. So they want to help the programme group to get the correct score.
+
+Recall that the median of a set is the value that separates the higher half of set's values from the set's lower values.
+
+For example, given the set with \textbf{odd} numbers of elements:
+
+\begin{center}
+	$\{78,94,17,87,65\}$
+\end{center}
+
+The median score is 78.\\
+
+For another example, given the set with \textbf{even} numbers of elements:
+
+\begin{center}
+	$\{78,94,17,87,65,76\}$
+\end{center}
+
+The median score is $(78+76)/2=77$.
+\paragraph{}
+
+In Yang's fans group, the crazy fans have quarrelled for the following two opinions to get this median score:
+
+\begin{itemize}
+	\item Use only one min heap.
+	\item Use both min heap and max heap.
+\end{itemize}
+
+Now they are asking you for your help. Please help them solve this problem.
+\newpage
+\textbf{So first, let's try the case with only one min heap to get the median score.}
+
+Consider a set $S$ of arbitrary and distinct integer scores (not necessatily the set shown above). Let $n$ denote the size of set $S$, and assume in this whole problem that $n$ can be odd or even. \textbf{Assume that we have inserted all the elements in set $S$ to the minheap.}
+~\\
+
+(1) \textbf{Using natural language}, describe how to implement the algorithm that returns the median from set $S$. Analyze your time complexity. (Suppose the total number of element in $S$ is given, which is $n$. And the minheap has been built.)
+
+\textbf{You will receive full credit only if your method runs in $O(n\mathrm{log}n)$ time.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\textbf{And now, let's try the case with both max heap and min heap to get the median score.}
+
+Now, another fancy fan Wang Xiaoming finds a data structure for storing a set $S$ of numbers, supporting the following operations:
+\begin{itemize}
+	\item \texttt{INSERT(x):} Add a new given number $x$ to $S$
+	\item \texttt{MEDIAN():} Return a median of $S$.
+\end{itemize}
+
+Assume no duplicates are added to $S$. He proposes that he can use a maxheap $A$ and a minheap $B$ to get the median score easily. These two heaps need to always satisfy the following two properties:
+
+\begin{itemize}
+	\item Every element in $A$ is smaller than every element in $B$.
+	\item The size of $A$ equals the size of $B$, or is one less.
+\end{itemize}
+
+To return a median of $S$, he proposes to return the minimum element of $B$. \textbf{Assume that we have inserted all the elements in set $S$ to the two heaps.}
+
+\paragraph{}
+(2) Using two properties above, argue that this is correct, partially correct or wrong (i.e., that a median is returned). If it is not correct, can we find a strategy that calculates the median in $O(1)$ time complexity? Explain the reason and strategy (if we need) briefly. (Suppose the total number of element in $S$ is given, which is $n$. And heap $A$, $B$ have been built.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+(3) \textbf{Using natural language}, explain how to implement \texttt{INSERT(x)} operation. You should notice that these two properties should always be held. Analyze the most efficient running time of \texttt{INSERT} algorithm in terms of $n$. (Suppose the total number of element in $S$ is given, which is $n$.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% End of Problem 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start of Problem 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\problem{$k$-ary Heap}
+\paragraph{}
+In class, Prof. Zhang has mentioned the method of the array storage of a binary heap. In order to have a better view of heap, we decide to extend the idea of a binary heap to a $k$-ary heap. In other words, each node in the heap now has at most $k$ children instead of just two, which is stored in a complete binary tree.
+
+For example, the following heap is a 3-ary max-heap.
+~\\
+
+\begin{minipage}{1\textwidth}
+	\centering
+	\begin{tikzpicture}
+	\Tree
+	[.10
+		[.7
+			\edge[]; [.4
+			]
+			\edge[]; [.5
+			]
+			\edge[]; [.6
+			]
+		]
+		[.9
+			\edge[]; [.1 
+			]
+			\edge[]; [.2 
+			]
+			\edge[blank]; \node[blank]{};
+		]
+		[.8
+			\edge[blank]; \node[blank]{};
+			\edge[blank]; \node[blank]{};
+			\edge[blank]; \node[blank]{};
+		]
+	]
+	\end{tikzpicture}
+\end{minipage}%
+
+~\\
+
+%%%%% (1)
+(1) If you are given the node with index $i$, what is the index of its parent and its $j$th child ($1 \leq j \leq k$)?
+
+\textbf{Notice: }We assume the root is kept in $A[1]$. For your final answer, please represent it in terms of $k$, $j$ and $i$. Please use flooring or ceiling to ensure that your final answer is as tight as possible if you need, i.e. $\lfloor x \rfloor$, $\lceil x \rceil$.
+~\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%% (2)
+(2) What is the height of a $k$-ary heap of $n$ elements? Please show your steps.
+
+\textbf{Notice: }For your final answer, please represent it in terms of $k$ and $n$. Please use flooring or ceiling to ensure that your final answer is as tight as possible if you need, i.e. $\lfloor x \rfloor$, $\lceil x \rceil$.
+~\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+(3) Now we want to study which value of $k$ can minimize the comparison complexity of heapsort. For heapsort, given a built heap, the worst-case number of comparisons is $\Theta(nhk)$, where $h=\Theta(\log_kn)$ is the height of the heap. Suppose the worst-case number of comparisons is $T(n,k)$. You need to do: 
+
+\begin{itemize}
+	\item{Explain why $T(n,k) = \Theta(nhk)$.}
+	\item{Suppose $n$ is fixed, solve for $k$ so that $T(n,k)$ is minimized.}
+\end{itemize}
+
+\textbf{Notice: } $k$ is an integer actually. In this problem, we only consider the complexity of comparision, not the accurate number of comparision.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%% (4)
+(4) TA Yuan is motivated by professor, and he has a new idea. He wants to use $k$-ary heap to implement the heapsort algorithm. Because he wants to loaf on the job, he chooses $k=1$. And he argues that we only need to do the \texttt{BUILD-HEAP} operation in the heapsort algorithm if $k = 1$. Since we know from the lecture that \texttt{BUILD-HEAP} takes $O(n)$ time, he thinks it can actually sort in $O(n)$ time! 
+
+From the above, we can conclude his two stataments:
+\begin{itemize}
+	\item{When $k=1$, the only operation required in heapsort algorithm is \texttt{BUILD-HEAP}.}
+	\item{When $k=1$, the \texttt{BUILD-HEAP} operation will run in $O(n)$ time.}
+\end{itemize}
+Now you are the student of TA Yuan, and you need to judge his two statements are true or false \textbf{respectively}. 
+\begin{itemize}
+	\item{If his statement is true, please explain the reason and prove its correctness.}
+	\item{If his statement is false, please help him find the fallacy in his argument with your own reason. In the heapsort he proposes, what sorting algorithm is actually performed? What is the worst running time of such a sorting algorithm?}
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% START YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%~\\
+%\textbf{Solution:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END YOUR SOLUTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% End of Problem 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
